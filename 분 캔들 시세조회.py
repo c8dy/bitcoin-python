@@ -6,4 +6,9 @@ headers = {"Accept": "application/json"}
 
 response = requests.request("GET", url, headers=headers)
 
-print(response.text)
+# print(response.text)
+
+bit_price = response.json()
+
+print(bit_price[0])
+print(bit_price[0]['market'])
