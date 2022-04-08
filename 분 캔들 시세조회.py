@@ -82,12 +82,12 @@ MA5 = ma_5th[-1]
 if now_price > MA1 and now_price > MA2 and now_price > MA3 and now_price > MA4 and now_price > MA5:
     if MA1 > MA2 and MA1 > MA3 and MA2 > MA3:
         print("골드크로스, 1차 매수하세요.")
-        if MA1 > MA4 and MA3 > MA5:
+        if MA1 > MA4 and MA1 > MA5:
             print("2차 골든크로스, 추가매수 할 수 있고,  수익 구간입니다. 수익매도를 할 수 있습니다.")
 elif now_price < MA1 and now_price < MA2 and now_price < MA3 and now_price < MA4 and now_price < MA5:
     if MA1 < MA2 and MA1 < MA3 and MA2 < MA3:
         print("데드크로스, 1차 매도하세요.")
-        if MA1 < MA4 and MA3 < MA5:
+        if MA1 < MA4 and MA1 < MA5:
             print("2차 데드크로스, 추가매도 할 수 있고,  손절을 대비하세요.")
 else:
     print("현제 추세 전환 중입니다.")
