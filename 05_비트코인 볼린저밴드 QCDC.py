@@ -62,7 +62,18 @@ close_prices = np.array(close_prices, dtype='f8')
 
 #MACD함수 불러오기
 
-macd, macd_signal, macd_hist=talib.MACD(close_prices,fasrmaperiod=12,slowmaperiod=26,signalperiod=9)
+macd, macd_signal, macd_hist=talib.MACD(close_prices, fastperiod=12,slowperiod=26,signalperiod=9)
 
 MACD = macd[-1]
 MACDSIG = macd_signal[-1]
+
+if MACD >= MACDSIG:
+    macdstate = "GC"
+elif MACD < MACDSIG:
+    macdstate = "DC"
+else:
+    macdstate = "NONE"
+
+print("MACD : ", MACD)
+print("MACDSIG : ", MACDSIG)
+print("macdstate : ", macdstate)
