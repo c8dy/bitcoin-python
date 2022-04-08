@@ -1,5 +1,6 @@
 # 02_비트코인 시세조회
 
+from sre_compile import MAXCODE
 import requests
 
 import talib
@@ -59,3 +60,9 @@ low_prices = np.array(low_prices, dtype='f8')
 open_prices = np.array(open_prices, dtype='f8')
 close_prices = np.array(close_prices, dtype='f8')
 
+#MACD함수 불러오기
+
+macd, macd_signal, macd_hist=talib.MACD(close_prices,fasrmaperiod=12,slowmaperiod=26,signalperiod=9)
+
+MACD = macd[-1]
+MACDSIG = macd_signal[-1]
