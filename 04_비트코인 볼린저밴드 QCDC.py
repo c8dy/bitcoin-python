@@ -60,33 +60,4 @@ open_prices = np.array(open_prices, dtype='f8')
 close_prices = np.array(close_prices, dtype='f8')
 
 #볼린저밴드 점수 불러오기
-upperband, middleband, lowerband = talib.BBANDS(close_prices, timeperiod=5, nbdevup=2, nbdevdn=2, matype=0)
-print("upperband : ", upperband[-1])
-print()
-print("middleBand : ", middleband[-1])
-print()
-print("lowerband : ", lowerband[-1])
-
-bband_high = upperband[-1]
-bband_midd = middleband[-1]
-bband_low = lowerband[-1]
-
-now_price = close_prices[-1]
-
-if  now_price <= bband_low:
-    print("가격이 하향돌파")
-    print("분할매수 하세요")
-elif bband_low < now_price < bband_midd:
-    print("가격이 하단에 위치")
-elif bband_midd <= now_price < bband_high:
-    print("가격이 상단에 위치")
-elif now_price >= bband_high:
-    print("가격이 상단 상향돌파")
-    print("분할 매도 하세요")
-else:
-    print("예외발생.")
-
-
-bband_profit = bband_high - bband_low
-
-print("bband_profit : ", bband_profit)
+talib.BBANDS(close_prices, )
