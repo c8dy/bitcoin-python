@@ -335,5 +335,7 @@ else:
     print("매매 대기 상태")
     
 print("현제 가격 {:,.2f}".format(now_price))
+print("--------------------")
+print()
 
 print("bns_stop : ", bns_stop)
