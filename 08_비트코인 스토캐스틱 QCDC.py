@@ -1,5 +1,6 @@
 # 02_비트코인 시세조회
 
+from fileinput import close
 from sre_compile import MAXCODE
 import requests
 
@@ -60,44 +61,41 @@ low_prices = np.array(low_prices, dtype='f8')
 open_prices = np.array(open_prices, dtype='f8')
 close_prices = np.array(close_prices, dtype='f8')
 
-cci = talib.CCI(high_prices, low_prices, close_prices, timeperiod=20)
+slowk, slowd = talib.STOCH(high_prices, low_prices, close_prices, fastk_period=14, slowk_period=3, slowk_matype=0, slowd_period=3, slowd_matype=0)
 
-CCI = cci[-1]
-CCI3 = cci[-3]
+SlowK = slowk[-1]
+SlowD = slowd[-1]
 
-if CCI < -100:
-    cci_state = "DW"
-elif -100 <= CCI < 0:
-    cci_state = "MD_DW"
-elif 0 <= CCI < 100:
-    cci_state = "MD_UP"
+SlowK3 = slowk[-3]
+SlowD3 = slowd[-3]
+
+
+if SlowK >= SlowD:
+    stoch_state = "GC"
 else:
-    cci_state = "NONE"
+    stoch_state = "DC"
 
-#CCI 기울기
-CCI_TI = ((CCI - CCI3) / CCI3+100)
+S_KTI = ((SlowK - SlowK3) / SlowK3 + 100)
+S_DTI = ((SlowD - SlowD3) / SlowD3 + 100)
 
-
-if CCI_TI > 0:
-    cci_ti_state = "TI_UP"
+if S_DTI > 0 and S_KTI > 0:
+    stoch_ti_state = "TI_UP"
+elif S_KTI < 0 and S_DTI < 0:
+    stoch_ti_state = "TI_DW"
 else:
-    cci_ti_state = "TI_DW"
+    stoch_ti_state = "TI_NONE"
 
-print("CCI : {:.2f}\n".format(CCI))
-print("CCI3 : {:.2f}\n".format(CCI3))
-print("cci_state : {}\n".format(cci_state))
-print("CCI_TI : {:.2f}\n".format(CCI_TI))
-print("cci_ti_state : {}\n".format(cci_state))
+print("Slowk : {:,.2f}\n".format(SlowK))
+print("SlowD : {:,.2f}\n".format(SlowD))
+print("stoch_state : {}\n".format(stoch_state))
+print("S_KTI : {:,.2f}\n".format(S_KTI))
+print("S_DTI : {:,.2f}\n".format(S_DTI))
+print("stoch_ti_state : {}\n".format(stoch_ti_state))
 
-if cci_state == "MD_DW" and cci_ti_state == "TI_UP":
+
+if stoch_state == "GC" and stoch_ti_state == "TI_UP":
     print("1차 매수")
-elif cci_state == "MD_UP" and cci_ti_state == "TI_UP":
-    print("2차 매수")
-elif cci_state == "MD_UP" and cci_ti_state == "TI_DW":
+elif stoch_state == "DC" and stoch_ti_state == "TI_DW":
     print("1차 매도")
-elif cci_state == "MD_DW" and cci_ti_state == "TI_DW":
-    print("2차 매도")
 else:
     print("매매 대기")
-
-

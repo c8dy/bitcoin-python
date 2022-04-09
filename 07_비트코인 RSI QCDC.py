@@ -1,5 +1,6 @@
 # 02_비트코인 시세조회
 
+from fileinput import close
 from sre_compile import MAXCODE
 import requests
 
@@ -60,4 +61,42 @@ low_prices = np.array(low_prices, dtype='f8')
 open_prices = np.array(open_prices, dtype='f8')
 close_prices = np.array(close_prices, dtype='f8')
 
+<<<<<<< HEAD
 # RSI
+=======
+
+rsi = talib.RSI(close_prices, timeperiod=14)
+
+RSI = rsi[-1]
+RSI3 = rsi[-3]
+
+if RSI <= 25:
+    rsi_state = "DW"
+elif 25 < RSI < 75:
+    rsi_state = "MD"
+elif RSI >= 75:
+    rsi_state = "UP"
+else:
+    rsi_state = "NONE"
+
+RSI_TI = ((RSI - RSI3) / RSI3 + 100)
+
+if RSI_TI > 0:
+    rsi_ti_state = "TI_UP"
+else:
+    rsi_ti_state = "TI_DW"
+
+print("RSI : {:.2f}\n".format(RSI))
+print("RSI3 : {:.2f}\n".format(RSI3))
+print("rsi_state : {}\n".format(rsi_state))
+print("RSI_TI : {:.2f}\n".format(RSI_TI))
+print("rsi_ti_state : {}\n".format(rsi_ti_state))
+
+
+if rsi_state == "MD" and rsi_ti_state == "TI_UP":
+    print("1차 매수")
+elif rsi_state == "MD" and rsi_ti_state == "TI_DW":
+    print("1차 매도")
+else:
+    print("매매 대기")
+>>>>>>> 52fe67911f6cb9442116656e6606bd6eb3173641
