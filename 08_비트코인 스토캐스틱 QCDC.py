@@ -60,3 +60,42 @@ high_prices = np.array(high_prices, dtype='f8')
 low_prices = np.array(low_prices, dtype='f8')
 open_prices = np.array(open_prices, dtype='f8')
 close_prices = np.array(close_prices, dtype='f8')
+
+slowk, slowd = talib.STOCH(high_prices, low_prices, close_prices, fastk_period=14, slowk_period=3, slowk_matype=0, slowd_period=3, slowd_matype=0)
+
+SlowK = slowk[-1]
+SlowD = slowd[-1]
+
+SlowK3 = slowk[-3]
+SlowD3 = slowd[-3]
+
+
+if SlowK >= SlowD:
+    stoch_state = "GC"
+else:
+    stoch_state = "DC"
+
+S_KTI = ((SlowK - SlowK3) / SlowK3 + 100)
+S_DTI = ((SlowD - SlowD3) / SlowD3 + 100)
+
+if S_DTI > 0 and S_KTI > 0:
+    stoch_ti_state = "TI_UP"
+elif S_KTI < 0 and S_DTI < 0:
+    stoch_ti_state = "TI_DW"
+else:
+    stoch_ti_state = "TI_NONE"
+
+print("Slowk : {:,.2f}\n".format(SlowK))
+print("SlowD : {:,.2f}\n".format(SlowD))
+print("stoch_state : {}\n".format(stoch_state))
+print("S_KTI : {:,.2f}\n".format(S_KTI))
+print("S_DTI : {:,.2f}\n".format(S_DTI))
+print("stoch_ti_state : {}\n".format(stoch_ti_state))
+
+
+if stoch_state == "GC" and stoch_ti_state == "TI_UP":
+    print("1차 매수")
+elif stoch_state == "DC" and stoch_ti_state == "TI_DW":
+    print("1차 매도")
+else:
+    print("매매 대기")
