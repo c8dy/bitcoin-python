@@ -68,7 +68,7 @@ MACD = macd[-1]
 MACDSIG = macd_signal[-1]
 
 if MACD >= MACDSIG:
-    macdstate = "GC= [만약에, 수익중이면 매도]= [만약에, 손실중이면 물타기]= [만약에, 매수전이면 매수]"
+    macdstate = "GC= [만약에, 수익중이면 매도]\n= [만약에, 손실중이면 물타기]\n= [만약에, 매수전이면 매수]"
 elif MACD < MACDSIG:
     macdstate = "DC"
 else:
