@@ -60,3 +60,4 @@ low_prices = np.array(low_prices, dtype='f8')
 open_prices = np.array(open_prices, dtype='f8')
 close_prices = np.array(close_prices, dtype='f8')
 
+# RSI
