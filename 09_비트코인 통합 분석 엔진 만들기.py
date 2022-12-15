@@ -5,7 +5,12 @@ import requests
 import talib
 import numpy as np
 from pandas import Series
+
 # 터미널에서 pip install talib .. 이런식으로 설치. 
+
+import schedule
+import time
+
 
 def Candles15():
     url = "https://api.upbit.com/v1/candles/minutes/30"
@@ -302,40 +307,51 @@ def RSI():
     # print("--------------------")
     return rsi_bns
 
+def run():
+    ma_bns, now_price = MA()
+    bb_bns = BBand()
+    macd_bns = MACD()
+    cci_bns = CCI()
+    stoch_bns = STOCH()
+    rsi_bns = RSI()
 
 
-ma_bns, now_price = MA()
-bb_bns = BBand()
-macd_bns = MACD()
-cci_bns = CCI()
-stoch_bns = STOCH()
-rsi_bns = RSI()
+    print("ma_bns : ", ma_bns)
+    print("bb_bns : ", bb_bns)
+    print("macd_bns : ", macd_bns)
+    print("cci_bns : ", cci_bns)
+    print("stoch_bns : ", stoch_bns)
+    print("rsi_bns : ", rsi_bns)
+    print("now_price : ", now_price)
 
+    if ma_bns == 'S1' and bb_bns == 'S1' and macd_bns == 'S1' and cci_bns == 'S1' and stoch_bns == 'S1' and rsi_bns == 'S1':
+        bns_stop = "S1"
+    elif ma_bns == 'B1' and bb_bns == 'B1' and macd_bns == 'B1' and cci_bns == 'B1' and stoch_bns == 'B1' and rsi_bns == 'B1':
+        bns_stop = "B1"
+    else:
+        bns_stop = "None"
 
-print("ma_bns : ", ma_bns)
-print("bb_bns : ", bb_bns)
-print("macd_bns : ", macd_bns)
-print("cci_bns : ", cci_bns)
-print("stoch_bns : ", stoch_bns)
-print("rsi_bns : ", rsi_bns)
-print("now_price : ", now_price)
+    if bns_stop == "B1":
+        print("분할 매수 실행")
+    elif bns_stop == "S1":
+        print("분할매도 로직 실행")
+    else:
+        print("매매 대기 상태")
+        
+    print("현제 가격 {:,.2f}".format(now_price))
+    print("--------------------")
+    print()
 
-if ma_bns == 'S1' and bb_bns == 'S1' and macd_bns == 'S1' and cci_bns == 'S1' and stoch_bns == 'S1' and rsi_bns == 'S1':
-    bns_stop = "S1"
-elif ma_bns == 'B1' and bb_bns == 'B1' and macd_bns == 'B1' and cci_bns == 'B1' and stoch_bns == 'B1' and rsi_bns == 'B1':
-    bns_stop = "B1"
-else:
-    bns_stop = "None"
+    print("bns_stop : ", bns_stop)
 
-if bns_stop == "B1":
-    print("분할 매수 실행")
-elif bns_stop == "S1":
-    print("분할매도 로직 실행")
-else:
-    print("매매 대기 상태")
+schedule.every(5).seconds.do(run)
+
+t = 0
+while True:
+    schedule.run_pending()
+    t += 1
+    time.sleep(1)
+    print(t, "초")
+    if(t == 5):
+        t = 0
     
-print("현제 가격 {:,.2f}".format(now_price))
-print("--------------------")
-print()
-
-print("bns_stop : ", bns_stop)
